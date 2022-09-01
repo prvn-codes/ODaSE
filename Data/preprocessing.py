@@ -2,6 +2,9 @@ import csv
 import nltk
 nltk.download('wordnet')
 nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('omw-1.4')
 from nltk import word_tokenize, pos_tag
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
