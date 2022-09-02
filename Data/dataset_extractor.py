@@ -1,9 +1,33 @@
-import requests
+URL = "https://www.kaggle.com/datasets?page=1"
+sample = open("Data/dataset.txt","w")
 
-headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246"}
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from time import sleep
+import chromedriver_autoinstaller
+from bs4 import BeautifulSoup
+
+chromedriver_autoinstaller.install()
 
 
+options = Options()
+options.headless = True
 
-sample = open("sample.txt",'w')
+driver = webdriver.Chrome(options=options)
 
-sample.write(requests.get(url="https://www.kaggle.com/datasets",headers=headers).text)
+
+driver.get(url=URL)
+sleep(5)
+response = driver.page_source
+
+soup = BeautifulSoup(response,'html.parser')
+body = soup.find("div", class_='sc-gauFBm jPwQup')
+
+datasets =[]
+paths = []
+
+for a in body.find_all('a',class_='sc-gFGZVQ NUNdY',href=True):
+    paths.append(a['href'])
+
+sample.write(str(paths))
+sample.close()
